@@ -1,0 +1,845 @@
+/* ============================================================
+   ECO-TRACKER — style.css
+   All visual styling lives here.
+   Organised into sections:
+   1. CSS Variables (colour palette, fonts, sizes)
+   2. Base / Reset
+   3. Header
+   4. Main Layout
+   5. Input Card (add item form)
+   6. Stats Row
+   7. Filter Pills
+   8. Inventory Grid & Food Cards
+   9. Empty State
+   10. Modal
+   11. Toast
+   12. Scrollbar
+   13. Animations
+   14. Responsive (mobile overrides)
+============================================================ */
+
+
+/* ─────────────────────────────────────────
+   1. CSS VARIABLES
+   Define colours, fonts and sizes ONCE here.
+   Use them everywhere with var(--name).
+───────────────────────────────────────── */
+:root {
+  /* Green shades */
+  --green-50:  #EAF3DE;
+  --green-200: #97C459;
+  --green-600: #3B6D11;
+  --green-800: #27500A;
+
+  /* Amber/yellow shades */
+  --amber-50:  #FAEEDA;
+  --amber-200: #EF9F27;
+  --amber-600: #854F0B;
+  --amber-800: #633806;
+
+  /* Red shades */
+  --red-50:  #FCEBEB;
+  --red-200: #F09595;
+  --red-600: #A32D2D;
+  --red-800: #791F1F;
+
+  /* Teal shades */
+  --teal-50:  #E1F5EE;
+  --teal-400: #1D9E75;
+  --teal-600: #0F6E56;
+  --teal-800: #085041;
+
+  /* Gray shades */
+  --gray-50:  #F8F9FA;
+  --gray-100: #F1EFE8;
+  --gray-200: #D3D1C7;
+  --gray-400: #888780;
+  --gray-600: #5F5E5A;
+  --gray-800: #2C2C2A;
+
+  --white: #ffffff;
+
+  /* Text colours */
+  --text-primary:   #1a1a18;
+  --text-secondary: #5a5a56;
+  --text-muted:     #888780;
+
+  /* Misc */
+  --border:     rgba(0, 0, 0, 0.1);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,0.12);
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Fonts */
+  --font-display: 'DM Serif Display', serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+
+/* ─────────────────────────────────────────
+   2. BASE / RESET
+   Remove browser default margin/padding.
+   Set sensible defaults for all elements.
+───────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--gray-50);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+
+/* ─────────────────────────────────────────
+   3. HEADER
+   Sticky bar at top with logo + button.
+───────────────────────────────────────── */
+header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  height: 64px;
+  display: flex;
+  align-items: center;           /* Vertically center logo and button */
+  justify-content: space-between; /* Logo on left, button on right */
+  position: sticky; /* Stays at top when you scroll */
+  top: 0;
+  z-index: 100;     /* Float above all other content */
+  box-shadow: var(--shadow-sm);
+}
+
+/* Logo link (wraps icon + text) */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+/* Green square holding the leaf emoji */
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--teal-400), var(--green-600));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* "EcoTracker" text */
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* "Tracker" part is teal */
+.logo-text span {
+  color: var(--teal-400);
+}
+
+/* ✨ Magic Recipe button */
+.magic-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #1D9E75 0%, #639922 60%, #3B6D11 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-xl);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(29, 158, 117, 0.3);
+}
+
+.magic-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+.magic-btn:active { transform: translateY(0); opacity: 1; }
+
+.magic-btn .btn-icon { font-size: 16px; }
+
+
+/* ─────────────────────────────────────────
+   4. MAIN LAYOUT
+   Centers the content, limits max width.
+───────────────────────────────────────── */
+main {
+  max-width: 1100px;
+  margin: 0 auto;          /* Center horizontally */
+  padding: 2rem 1.5rem 4rem;
+}
+
+
+/* ─────────────────────────────────────────
+   5. INPUT CARD (Add Item Form)
+───────────────────────────────────────── */
+.input-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.input-card-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 3-column layout: [name input] [date input] [button] */
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: end; /* Align button bottom with inputs */
+}
+
+/* Stacks label on top of input */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.field-group input {
+  padding: 10px 14px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: var(--white);
+  transition: border-color 0.2s;
+  outline: none;
+  width: 100%;
+}
+
+/* Blue-green glow on focus */
+.field-group input:focus {
+  border-color: var(--teal-400);
+  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
+}
+
+/* "+ Add Item" button */
+.add-btn {
+  padding: 10px 24px;
+  background: var(--teal-400);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+  height: 42px;
+}
+
+.add-btn:hover  { background: var(--teal-600); transform: translateY(-1px); }
+.add-btn:active { transform: translateY(0); }
+
+
+/* ─────────────────────────────────────────
+   6. STATS ROW (Fresh / Expiring / Expired counts)
+───────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+/* Coloured numbers per status */
+.stat-card.fresh    .stat-value { color: var(--green-600); }
+.stat-card.expiring .stat-value { color: var(--amber-600); }
+.stat-card.expired  .stat-value { color: var(--red-600); }
+
+
+/* ─────────────────────────────────────────
+   7. FILTER PILLS
+───────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 4px;
+}
+
+/* Base pill style (inactive) */
+.pill {
+  padding: 6px 16px;
+  border-radius: 999px; /* Fully rounded = pill shape */
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--gray-200);
+  background: var(--white);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.18s;
+}
+
+.pill:hover { border-color: var(--teal-400); color: var(--teal-600); }
+
+/* Active pill — All */
+.pill.active {
+  background: var(--teal-400);
+  color: white;
+  border-color: var(--teal-400);
+  box-shadow: 0 2px 8px rgba(29,158,117,0.25);
+}
+
+/* Active pill — Fresh */
+.pill-fresh.active {
+  background: var(--green-600);
+  border-color: var(--green-600);
+  box-shadow: 0 2px 8px rgba(59,109,17,0.25);
+}
+
+/* Active pill — Expiring */
+.pill-expiring.active {
+  background: var(--amber-600);
+  border-color: var(--amber-600);
+  box-shadow: 0 2px 8px rgba(133,79,11,0.25);
+}
+
+/* Active pill — Expired */
+.pill-expired.active {
+  background: var(--red-600);
+  border-color: var(--red-600);
+  box-shadow: 0 2px 8px rgba(163,45,45,0.25);
+}
+
+
+/* ─────────────────────────────────────────
+   8. INVENTORY GRID & FOOD CARDS
+───────────────────────────────────────── */
+
+/* Grid container — starts as 1 column (mobile) */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Each individual food card */
+.food-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+  animation: cardIn 0.3s ease both; /* Fade-in animation on creation */
+  border-left: 4px solid transparent; /* Coloured left accent */
+}
+
+.food-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px); /* Lift on hover */
+}
+
+/* Left border colour by status */
+.food-card.fresh    { border-left-color: var(--green-200); }
+.food-card.expiring { border-left-color: var(--amber-200); }
+.food-card.expired  { border-left-color: var(--red-200);   }
+
+/* Top row: item name + delete button */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.item-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  line-height: 1.25;
+  flex: 1;
+  padding-right: 10px;
+}
+
+/* 🗑 Trash icon button */
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  transition: color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  color: var(--red-600);
+  background: var(--red-50);
+}
+
+.delete-btn svg { width: 16px; height: 16px; }
+
+/* Freshness Badge (Fresh / Expiring Soon / Expired) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+/* Small coloured dot inside badge */
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.badge.fresh    { background: var(--green-50); color: var(--green-800); }
+.badge.fresh    .badge-dot { background: var(--green-600); }
+
+.badge.expiring { background: var(--amber-50); color: var(--amber-800); }
+.badge.expiring .badge-dot { background: var(--amber-600); }
+
+.badge.expired  { background: var(--red-50);   color: var(--red-800); }
+.badge.expired  .badge-dot { background: var(--red-600); }
+
+/* "X days left" text */
+.days-left {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.days-left strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Date text at bottom of card */
+.expiry-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
+/* ─────────────────────────────────────────
+   9. EMPTY STATE
+   Shown when no items exist or match filter.
+───────────────────────────────────────── */
+.empty-state {
+  grid-column: 1 / -1; /* Span all grid columns */
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.empty-state p        { font-size: 1rem; color: var(--text-secondary); }
+.empty-state .empty-sub { font-size: 0.85rem; margin-top: 0.5rem; }
+
+
+/* ─────────────────────────────────────────
+   10. MODAL
+───────────────────────────────────────── */
+
+/* Dark overlay behind modal */
+.modal-backdrop {
+  display: none; /* Hidden by default */
+  position: fixed;
+  inset: 0;      /* Cover full screen (top:0, right:0, bottom:0, left:0) */
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(2px);
+}
+
+/* JS adds class "open" to show the backdrop */
+.modal-backdrop.open {
+  display: flex;
+  animation: fadeIn 0.2s ease both;
+}
+
+/* White modal box */
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  max-width: 580px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.25s ease both;
+}
+
+/* Sticky header inside modal */
+.modal-header {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--teal-50), var(--green-50));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 1px solid var(--border);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+/* ✕ Close button */
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.modal-close:hover { background: var(--gray-100); color: var(--text-primary); }
+
+.modal-body   { padding: 1.5rem; }
+
+/* Info bar showing which ingredients are being used */
+.modal-context {
+  background: var(--gray-50);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.modal-context .ctx-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+
+/* Area where the AI recipe text appears */
+.recipe-output {
+  min-height: 120px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.75;
+}
+
+/* Loading spinner container */
+.recipe-output .loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 2rem 0;
+  color: var(--text-secondary);
+}
+
+/* Spinning circle */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--teal-400); /* Only one segment is coloured */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Recipe title line */
+.recipe-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--teal-800);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Each step block */
+.recipe-step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--gray-50);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--teal-400);
+}
+
+.step-num  { font-family: var(--font-display); font-size: 1.1rem; color: var(--teal-600); min-width: 1.5rem; flex-shrink: 0; line-height: 1.5; }
+.step-text { font-size: 0.92rem; line-height: 1.65; color: var(--text-primary); }
+
+/* Error box */
+.recipe-error {
+  background: var(--red-50);
+  border: 1px solid rgba(163, 45, 45, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  color: var(--red-800);
+  font-size: 0.9rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* "Close" button (secondary) */
+.btn-secondary {
+  padding: 8px 18px;
+  background: none;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: border-color 0.2s;
+}
+
+.btn-secondary:hover { border-color: var(--gray-400); color: var(--text-primary); }
+
+/* "Regenerate" button (primary) */
+.btn-primary {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #1D9E75, #3B6D11);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover    { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+
+/* ─────────────────────────────────────────
+   11. TOAST NOTIFICATION
+───────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px); /* Hidden below screen */
+  background: var(--gray-800);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  z-index: 300;
+  transition: transform 0.3s ease;
+  white-space: nowrap;
+}
+
+/* JS adds class "show" to slide it into view */
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+
+/* ─────────────────────────────────────────
+   12. SCROLLBAR (optional cosmetic)
+───────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+
+
+/* ─────────────────────────────────────────
+   13. ANIMATIONS
+───────────────────────────────────────── */
+
+/* Card slides up and fades in when created */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal backdrop fades in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Modal box slides up */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading spinner rotates */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Recipe text fades in after loading */
+@keyframes textFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.recipe-text { animation: textFadeIn 0.4s ease both; }
+
+
+/* ─────────────────────────────────────────
+   14. RESPONSIVE — Mobile Overrides
+   These rules only apply when screen is narrow.
+───────────────────────────────────────── */
+
+/* Tablet: 2 card columns */
+@media (min-width: 640px) {
+  .inventory-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 card columns */
+@media (min-width: 960px) {
+  .inventory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: Stack form inputs vertically */
+@media (max-width: 600px) {
+  .input-row {
+    grid-template-columns: 1fr; /* Single column */
+  }
+}
+
+/* Mobile: Stack stat cards vertically */
+@media (max-width: 480px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+}

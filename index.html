@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eco-Tracker</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+
+  <!-- Our CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       HEADER
+  ══════════════════════════════════════ -->
+  <header>
+    <a href="#" class="logo">
+      <div class="logo-icon">🌿</div>
+      <span class="logo-text">Eco<span>Tracker</span></span>
+    </a>
+    <button class="magic-btn" onclick="openModal()">
+      <span class="btn-icon">✨</span>
+      Magic Recipe
+    </button>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════ -->
+  <main>
+
+    <!-- ADD ITEM FORM -->
+    <div class="input-card">
+      <div class="input-card-title">
+        <span>📦</span> Add a Food Item
+      </div>
+      <div class="input-row">
+
+        <div class="field-group">
+          <label for="item-name">Item Name</label>
+          <input
+            type="text"
+            id="item-name"
+            placeholder="e.g. Avocado, Greek Yogurt…"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="expiry-date">Expiry Date</label>
+          <input type="date" id="expiry-date" />
+        </div>
+
+        <button class="add-btn" onclick="addItem()">+ Add Item</button>
+
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-card fresh">
+        <div class="stat-label">Fresh</div>
+        <div class="stat-value" id="stat-fresh">0</div>
+      </div>
+      <div class="stat-card expiring">
+        <div class="stat-label">Expiring Soon</div>
+        <div class="stat-value" id="stat-expiring">0</div>
+      </div>
+      <div class="stat-card expired">
+        <div class="stat-label">Expired</div>
+        <div class="stat-value" id="stat-expired">0</div>
+      </div>
+    </div>
+
+    <!-- FILTER PILLS -->
+    <div class="filter-bar">
+      <span class="filter-label">Filter:</span>
+      <button class="pill active"          data-filter="all"      onclick="setFilter('all', this)">All</button>
+      <button class="pill pill-fresh"      data-filter="fresh"    onclick="setFilter('fresh', this)">🟢 Fresh</button>
+      <button class="pill pill-expiring"   data-filter="expiring" onclick="setFilter('expiring', this)">🟡 Expiring Soon</button>
+      <button class="pill pill-expired"    data-filter="expired"  onclick="setFilter('expired', this)">🔴 Expired</button>
+    </div>
+
+    <!-- INVENTORY GRID — cards are injected here by JavaScript -->
+    <div class="inventory-grid" id="inventory-grid"></div>
+
+  </main>
+
+  <!-- ══════════════════════════════════════
+       MAGIC RECIPE MODAL
+  ══════════════════════════════════════ -->
+  <div class="modal-backdrop" id="modal-backdrop" onclick="handleBackdropClick(event)">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon">✨</div>
+          <h2 class="modal-title" id="modal-title">Magic Recipe</h2>
+        </div>
+        <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-context" id="modal-context">
+          <span class="ctx-icon">ℹ️</span>
+          <span id="context-text">Generating a recipe using your expiring ingredients…</span>
+        </div>
+        <!-- AI recipe text is injected here -->
+        <div class="recipe-output" id="recipe-output"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn-primary" id="retry-btn" onclick="fetchRecipe()" disabled>
+          Regenerate ✨
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TOAST NOTIFICATION
+  ══════════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Our JavaScript file — always at the BOTTOM of body -->
+  <script src="app.js"></script>
+
+</body>
+</html>
